@@ -38,7 +38,7 @@ export class ScEksStack extends cdk.Stack {
 
     // 2. Service Catalog PortFolio
     const portfolio = new CfnPortfolio(this, 'eks-portfolio', {
-      displayName: provider.pfName,
+      displayName: pfName.valueAsString,
       providerName: provider.valueAsString,
       description: pfDescription.valueAsString
     })
@@ -73,7 +73,7 @@ export class ScEksStack extends cdk.Stack {
         ManagedPolicy.fromAwsManagedPolicyName('AWSCodeBuildAdminAccess'),
         ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'),
         ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryFullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerServiceFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AmazonECS_FullAccess'),
         ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLogsFullAccess'),
         ManagedPolicy.fromAwsManagedPolicyName('IAMFullAccess'),
         //ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'),
