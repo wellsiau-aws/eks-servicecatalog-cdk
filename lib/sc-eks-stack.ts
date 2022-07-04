@@ -24,11 +24,11 @@ export class ScEksStack extends cdk.Stack {
       default: 'IT Services'
     })
 
-    // const pfName = new CfnParameter(this, 'portfolio-name', {
-    //   type: 'String',
-    //   description: 'Portfolio Name',
-    //   default: 'Service Catalog EKS Reference Architecture'
-    // })
+     const pfName = new CfnParameter(this, 'portfolio-name', {
+       type: 'String',
+       description: 'Portfolio Name',
+       default: 'Service Catalog EKS Reference Architecture'
+    })
 
     const pfDescription= new CfnParameter(this, 'portfolio-description', {
       type: 'String',
@@ -36,15 +36,12 @@ export class ScEksStack extends cdk.Stack {
       default: 'Service Catalog Portfolio that contains reference architecture products for EKS.'
     })
 
-
     // 2. Service Catalog PortFolio
     const portfolio = new CfnPortfolio(this, 'eks-portfolio', {
-      displayName: 'eks-portfolio',
+      displayName: provider.pfName,
       providerName: provider.valueAsString,
       description: pfDescription.valueAsString
     })
-
-
 
     // 2-1. Create Products and Associate them with Portfolio
     const eksClusterProduct = new EksClusterProduct(this, 'eks-product');
@@ -69,58 +66,69 @@ export class ScEksStack extends cdk.Stack {
     // 2-2. Create Launch Constraints over the products in the portfolio
     const launchRole = new iam.Role(this, 'sc-eks-launch-role', {
       managedPolicies: [
-        // ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2FullAccess'),
-        // ManagedPolicy.fromAwsManagedPolicyName('AWSCodeDeployFullAccess'),
-        // ManagedPolicy.fromAwsManagedPolicyName('AWSCodePipelineFullAccess'),
-        // ManagedPolicy.fromAwsManagedPolicyName('AWSCodeCommitFullAccess'),
-        // ManagedPolicy.fromAwsManagedPolicyName('AWSCodeBuildAdminAccess'),
-        // ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'),
-        // ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryFullAccess'),
-        // ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerServiceFullAccess'),
-        // ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLogsFullAccess'),
-        // ManagedPolicy.fromAwsManagedPolicyName('IAMFullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'),
-        
-
+        ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2FullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AWSCodeDeployFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AWSCodePipelineFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AWSCodeCommitFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AWSCodeBuildAdminAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerServiceFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLogsFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('IAMFullAccess'),
+        //ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'),
       ],
       inlinePolicies: {'sc-policy': new PolicyDocument({
-        statements: [new PolicyStatement({
-          effect: Effect.ALLOW,
-          resources: ['*'],
-          actions: [
-            "servicecatalog:ListServiceActionsForProvisioningArtifact",
-            "servicecatalog:ExecuteprovisionedProductServiceAction",
-            "iam:AddRoleToInstanceProfile",
-            "iam:ListRolePolicies",
-            "iam:ListPolicies",
-            "iam:DeleteRole",
-            "iam:GetRole",
-            "iam:CreateInstanceProfile",
-            "iam:PassRole",
-            "iam:DeleteInstanceProfile",
-            "iam:ListRoles",
-            "iam:RemoveRoleFromInstanceProfile",
-            "iam:CreateRole",
-            "iam:DetachRolePolicy",
-            "iam:AttachRolePolicy",
-            "iam:GetRolePolicy",
-            "iam:PutRolePolicy",
-            "iam:DeleteRolePolicy",
-            "cloudformation:DescribeStackResource",
-            "cloudformation:DescribeStackResources",
-            "cloudformation:GetTemplate",
-            "cloudformation:List*",
-            "cloudformation:DescribeStackEvents",
-            "cloudformation:DescribeStacks",
-            "cloudformation:CreateStack",
-            "cloudformation:DeleteStack",
-            "cloudformation:DescribeStackEvents",
-            "cloudformation:DescribeStacks",
-            "cloudformation:GetTemplateSummary",
-            "cloudformation:SetStackPolicy",
-            "cloudformation:ValidateTemplate",
-            "cloudformation:UpdateStack" ]
-        })]
+        statements: [
+          new PolicyStatement(
+            {
+              effect: Effect.ALLOW,
+              resources: ['*'],
+              actions: [
+                "servicecatalog:ListServiceActionsForProvisioningArtifact",
+                "servicecatalog:ExecuteprovisionedProductServiceAction",
+                "iam:AddRoleToInstanceProfile",
+                "iam:ListRolePolicies",
+                "iam:ListPolicies",
+                "iam:DeleteRole",
+                "iam:GetRole",
+                "iam:CreateInstanceProfile",
+                "iam:PassRole",
+                "iam:DeleteInstanceProfile",
+                "iam:ListRoles",
+                "iam:RemoveRoleFromInstanceProfile",
+                "iam:CreateRole",
+                "iam:DetachRolePolicy",
+                "iam:AttachRolePolicy",
+                "iam:GetRolePolicy",
+                "iam:PutRolePolicy",
+                "iam:DeleteRolePolicy",
+                "cloudformation:DescribeStackResource",
+                "cloudformation:DescribeStackResources",
+                "cloudformation:GetTemplate",
+                "cloudformation:List*",
+                "cloudformation:DescribeStackEvents",
+                "cloudformation:DescribeStacks",
+                "cloudformation:CreateStack",
+                "cloudformation:DeleteStack",
+                "cloudformation:DescribeStackEvents",
+                "cloudformation:DescribeStacks",
+                "cloudformation:GetTemplateSummary",
+                "cloudformation:SetStackPolicy",
+                "cloudformation:ValidateTemplate",
+                "cloudformation:UpdateStack" ]
+              }
+            ),
+            new PolicyStatement(
+              {
+                effect: Effect.ALLOW,
+                resources: ['*'],
+                actions: [
+                  "eks:*"
+                ]
+              }
+            )
+        ]
       })},
       assumedBy: new ServicePrincipal('servicecatalog.amazonaws.com')
     })
@@ -130,14 +138,12 @@ export class ScEksStack extends cdk.Stack {
       actions: ["sts:AssumeRole"],
       principals: [new iam.AccountRootPrincipal]
     }))
-
     
     new CfnLaunchRoleConstraint(this, 'launch-role-cluster', {
       portfolioId: portfolio.ref,
       productId: eksClusterProduct.product.ref,
       roleArn: launchRole.roleArn
     }).addDependsOn(clusterProductAssociation)
-
 
     new CfnLaunchRoleConstraint(this, 'launch-role-container', {
       portfolioId: portfolio.ref,
@@ -151,24 +157,22 @@ export class ScEksStack extends cdk.Stack {
       roleArn: launchRole.roleArn
     }).addDependsOn(pipelineProductAssociation)
 
-
-
-
     // 3. Create test users
     const testUser = new iam.Role(this, 'sc-eks-enduser-role', {
       managedPolicies: [
         ManagedPolicy.fromAwsManagedPolicyName('AWSServiceCatalogEndUserFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AWSCodeDeployFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AWSCodePipelineFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AWSCodeCommitFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AWSCodeBuildAdminAccess'),
         ManagedPolicy.fromAwsManagedPolicyName('AmazonS3ReadOnlyAccess'),
         ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ReadOnlyAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AWSCodeCommitPowerUser'),
         ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryPowerUser'),
         ManagedPolicy.fromAwsManagedPolicyName('AWSCodePipeline_ReadOnlyAccess'),
-      ],
-        
+      ],        
       assumedBy: new iam.AccountRootPrincipal()
     })
     this.enduserRole = testUser
-
 
     new CfnPortfolioPrincipalAssociation(this, 'enduser-role', {
       principalType: 'IAM',

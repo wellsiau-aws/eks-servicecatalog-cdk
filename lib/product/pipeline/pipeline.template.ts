@@ -7,7 +7,6 @@ import codepipeline = require('@aws-cdk/aws-codepipeline');
 import pipelineAction = require('@aws-cdk/aws-codepipeline-actions');
 import { codeToECRspec, deployToEKSspec } from '../../../utils/buildspecs';
 
-
 class PipelineTemplate extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -51,7 +50,6 @@ class PipelineTemplate extends cdk.Stack {
         repositoryName: repoName.valueAsString
     });
 
-
     const ecrRepo = new ecr.Repository(this, `ecr-repo`);
 
     const buildForECR = codeToECRspec(this, ecrRepo.repositoryUri);
@@ -94,7 +92,6 @@ class PipelineTemplate extends cdk.Stack {
     new CfnOutput(this, 'CodePipelineConsole', {
       value: `https://console.aws.amazon.com/codesuite/codepipeline/pipelines/${pipeline.pipelineName}/view?region=${cdk.Stack.of(this).region}`
     })
-
 
   }
 }

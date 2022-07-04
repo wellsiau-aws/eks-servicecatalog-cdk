@@ -20,7 +20,7 @@ export class PipelineProduct extends cdk.Construct {
         const product = new CfnCloudFormationProduct(this, 'pipeline-product', {
             name: 'CodePipeline with CodeCommit',
             description: 'Standardized CodePipeline for developer to deploy the code to EKS cluster',
-            owner: 'Jane Doe',
+            owner: 'reInforce GRC352',
             provisioningArtifactParameters: [
               {
                 info: {
