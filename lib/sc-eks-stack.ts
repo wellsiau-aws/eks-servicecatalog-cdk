@@ -66,18 +66,7 @@ export class ScEksStack extends cdk.Stack {
     // 2-2. Create Launch Constraints over the products in the portfolio
     const launchRole = new iam.Role(this, 'sc-eks-launch-role', {
       managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2FullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AWSCodeDeployFullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AWSCodePipelineFullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AWSCodeCommitFullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AWSCodeBuildAdminAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryFullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AmazonECS_FullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLogsFullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('IAMFullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMFullAccess'),
-        ManagedPolicy.fromAwsManagedPolicyName('AWSLambda_FullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'),
       ],
       inlinePolicies: {'sc-policy': new PolicyDocument({
         statements: [
