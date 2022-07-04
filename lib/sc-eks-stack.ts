@@ -169,7 +169,8 @@ export class ScEksStack extends cdk.Stack {
         ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ReadOnlyAccess'),
         ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryPowerUser'),
         ManagedPolicy.fromAwsManagedPolicyName('AWSCodePipeline_ReadOnlyAccess'),
-      ],        
+        ManagedPolicy.fromAwsManagedPolicyName('AWSCloudFormationReadOnlyAccess'),        
+      ],
       assumedBy: new iam.AccountRootPrincipal()
     })
     this.enduserRole = testUser
