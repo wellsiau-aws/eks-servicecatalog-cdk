@@ -76,7 +76,8 @@ export class ScEksStack extends cdk.Stack {
         ManagedPolicy.fromAwsManagedPolicyName('AmazonECS_FullAccess'),
         ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLogsFullAccess'),
         ManagedPolicy.fromAwsManagedPolicyName('IAMFullAccess'),
-        //ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMFullAccess'),
+        ManagedPolicy.fromAwsManagedPolicyName('AWSLambda_FullAccess'),
       ],
       inlinePolicies: {'sc-policy': new PolicyDocument({
         statements: [
